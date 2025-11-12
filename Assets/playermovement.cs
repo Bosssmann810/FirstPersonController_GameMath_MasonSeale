@@ -54,7 +54,7 @@ public class playermovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("beans");
-            //set velocity = tp the square root of jump hight and gravity (hellpfulguy is there to make sure it isnt negative
+
             rb.AddForce(Vector3.up * jumphight);
             grounded = false;
 
