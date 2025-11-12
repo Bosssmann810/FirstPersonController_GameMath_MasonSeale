@@ -301,6 +301,7 @@ MonoBehaviour:
   speed: 0.1
   defaultheight: 0
   defaultspeed: 0.1
+  small: 0.5
   crouchspeed: 0.05
   sprintspeed: 0.2
   jumphight: 1.5

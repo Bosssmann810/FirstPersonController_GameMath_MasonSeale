@@ -9,6 +9,7 @@ public class playermovement : MonoBehaviour
     public float speed;
     public float defaultheight;
     public float defaultspeed;
+    public float small;
     public float crouchspeed;
     public float sprintspeed;
     private bool cansprint = true;
@@ -60,7 +61,7 @@ public class playermovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             //make the player smaller
-            cc.height = 0.5f;
+            cc.height = small;
             //disable sprinting
             cansprint = false;
             //slow the player down
