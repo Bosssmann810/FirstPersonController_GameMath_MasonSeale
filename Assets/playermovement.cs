@@ -41,6 +41,8 @@ public class playermovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+
+        Debug.Log(cc.height);
         //is the player grounded?
         //convert the inputs to a vector 2 
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
@@ -90,7 +92,7 @@ public class playermovement : MonoBehaviour
         }
 
         //add the force of gravity
-        if (grounded == false)
+        if (grounded == true)
         {
             movingin.y += gravity * Time.deltaTime;
         }
