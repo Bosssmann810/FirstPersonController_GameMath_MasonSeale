@@ -299,8 +299,8 @@ MonoBehaviour:
   cc: {fileID: 330585548}
   speed: 0.1
   defaultspeed: 0.1
-  crouchspeedmultiplier: 2
-  sprintspeedmultiplier: 2
+  crouchspeed: 0.05
+  sprintspeed: 0.2
   jumphight: 1.5
   Velocity: {x: 0, y: 0, z: 0}
   gravity: -9.81
