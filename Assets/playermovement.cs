@@ -7,6 +7,7 @@ public class playermovement : MonoBehaviour
 {
     public CharacterController cc;
     public float speed;
+    public float defaultheight;
     public float defaultspeed;
     public float crouchspeed;
     public float sprintspeed;
@@ -24,7 +25,7 @@ public class playermovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        defaultheight = cc.height;
     }
     private void OnEnable()
     {
@@ -41,7 +42,7 @@ public class playermovement : MonoBehaviour
         if(grounded && movingin.y < 0 )
         {
             //make sure velcoity is 0 if its grounded
-            movingin.y = 0; 
+            grounded = true; 
         }
         //convert the inputs to a vector 2 
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
@@ -49,31 +50,34 @@ public class playermovement : MonoBehaviour
         movingin = new Vector3(inputs.x, 0.0f, inputs.y);
         //sets it to the max length of the vector so its not to high.
         movingin = Vector3.ClampMagnitude(movingin, max);
-        Debug.Log(grounded);
         //if they hit jump and are on the ground
-        if(jump.action.triggered && grounded)
+        if(Input.GetKeyDown(KeyCode.Space) && grounded)
         {
+            Debug.Log("beans");
             //set velocity = tp the square root of jump hight and gravity (hekpfulguy is there to make sure it isnt negative
             movingin.y = Mathf.Sqrt(jumphight * helpfulguy * gravity);
+            grounded = false;
 
         }
         if (Input.GetKey(KeyCode.LeftControl))
         {
             cc.height = 0.5f;
             cansprint = false;
-            speed = crouchspeed; 
+            speed = crouchspeed;
+            Debug.Log("fish");
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        else
         {
-            Debug.Log("huh");
-            cc.height = 10f;
+            cc.height = defaultheight;
             cansprint = true;
             speed = defaultspeed;
             
         }
+
         if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
         {
-
+            speed = sprintspeed;
+            Debug.Log("runnin");
         }
         //add the force of gravity
         if (grounded != true)
@@ -81,7 +85,7 @@ public class playermovement : MonoBehaviour
             movingin.y += gravity * Time.deltaTime;
         }
         //add everthing up 
-        Vector3 alltogethernow = (movingin * speed);
+        Vector3 alltogethernow = (movingin * speed) + (movingin.y * Vector3.up);
         //move that guy
         cc.Move(alltogethernow);
         //wow thats alot of stuff for jumping and walking...
