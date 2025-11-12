@@ -25,6 +25,7 @@ public class playermovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        grounded = true;
         defaultheight = cc.height;
     }
     private void OnEnable()
@@ -38,11 +39,12 @@ public class playermovement : MonoBehaviour
     private void FixedUpdate()
     {
         //is the player grounded?
-        grounded = cc.isGrounded;
-        if(grounded && movingin.y < 0 )
+        
+        if(movingin.y == 0 )
         {
             //make sure velcoity is 0 if its grounded
-            grounded = true; 
+            grounded = true;
+            movingin.y = 0;
         }
         //convert the inputs to a vector 2 
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
@@ -51,36 +53,48 @@ public class playermovement : MonoBehaviour
         //sets it to the max length of the vector so its not to high.
         movingin = Vector3.ClampMagnitude(movingin, max);
         //if they hit jump and are on the ground
-        if(Input.GetKeyDown(KeyCode.Space) && grounded)
+        if(Input.GetKeyDown(KeyCode.Space) && grounded == true)
         {
             Debug.Log("beans");
-            //set velocity = tp the square root of jump hight and gravity (hekpfulguy is there to make sure it isnt negative
+            //set velocity = tp the square root of jump hight and gravity (hellpfulguy is there to make sure it isnt negative
             movingin.y = Mathf.Sqrt(jumphight * helpfulguy * gravity);
             grounded = false;
 
         }
+        //if you hit left control
         if (Input.GetKey(KeyCode.LeftControl))
         {
+            //make the player smaller
             cc.height = 0.5f;
+            //disable sprinting
             cansprint = false;
+            //slow the player down
             speed = crouchspeed;
+            //make a debug log for testing
             Debug.Log("fish");
         }
+        //otherwise if nothing is pressed
         else
         {
+            //set height to normal
             cc.height = defaultheight;
+            //allow sprinting
             cansprint = true;
+            //and make speed normal
             speed = defaultspeed;
-            
+            //yes this code effects the stuff below   
         }
-
+        //if you hit shift
         if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
         {
+            //increase speed
             speed = sprintspeed;
+            //debug log for testing
             Debug.Log("runnin");
         }
+
         //add the force of gravity
-        if (grounded != true)
+        if (grounded == false)
         {
             movingin.y += gravity * Time.deltaTime;
         }
