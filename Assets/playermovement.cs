@@ -71,6 +71,10 @@ public class playermovement : MonoBehaviour
             speed = defaultspeed;
             
         }
+        if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
+        {
+
+        }
         //add the force of gravity
         if (grounded != true)
         {
