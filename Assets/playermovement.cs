@@ -18,6 +18,7 @@ public class playermovement : MonoBehaviour
     private float helpfulguy = -1f;
     private float max = 1f;
     private bool grounded;
+    private Rigidbody rb;
     public InputActionReference moveinput;
     public InputActionReference jump;
     public InputActionReference crouch;
@@ -25,6 +26,7 @@ public class playermovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb = gameObject.GetComponent<Rigidbody>();
         grounded = true;
         defaultheight = cc.height;
     }
@@ -39,13 +41,6 @@ public class playermovement : MonoBehaviour
     private void FixedUpdate()
     {
         //is the player grounded?
-        
-        if(movingin.y == 0 )
-        {
-            //make sure velcoity is 0 if its grounded
-            grounded = true;
-            movingin.y = 0;
-        }
         //convert the inputs to a vector 2 
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
         //convert the vector 2 to a vector 3 to use
@@ -53,11 +48,11 @@ public class playermovement : MonoBehaviour
         //sets it to the max length of the vector so its not to high.
         movingin = Vector3.ClampMagnitude(movingin, max);
         //if they hit jump and are on the ground
-        if(Input.GetKeyDown(KeyCode.Space) && grounded == true)
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("beans");
             //set velocity = tp the square root of jump hight and gravity (hellpfulguy is there to make sure it isnt negative
-            movingin.y = Mathf.Sqrt(jumphight * helpfulguy * gravity);
+            rb.AddForce(Vector3.up * jumphight);
             grounded = false;
 
         }
@@ -99,7 +94,7 @@ public class playermovement : MonoBehaviour
             movingin.y += gravity * Time.deltaTime;
         }
         //add everthing up 
-        Vector3 alltogethernow = (movingin * speed) + (movingin.y * Vector3.up);
+        Vector3 alltogethernow = (movingin * speed);
         //move that guy
         cc.Move(alltogethernow);
         //wow thats alot of stuff for jumping and walking...
