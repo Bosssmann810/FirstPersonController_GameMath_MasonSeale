@@ -298,10 +298,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cc: {fileID: 330585548}
   speed: 0.1
+  defaultspeed: 0.1
+  crouchspeedmultiplier: 2
+  sprintspeedmultiplier: 2
   jumphight: 1.5
+  Velocity: {x: 0, y: 0, z: 0}
   gravity: -9.81
   moveinput: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jump: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  crouch: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  sprint: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

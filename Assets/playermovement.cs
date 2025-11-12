@@ -6,6 +6,10 @@ public class playermovement : MonoBehaviour
 {
     public CharacterController cc;
     public float speed;
+    public float defaultspeed;
+    public float crouchspeedmultiplier;
+    public float sprintspeedmultiplier;
+    private bool cansprint = true;
     public float jumphight;
     public Vector3 Velocity; 
     public float gravity = -9.81f;
@@ -14,7 +18,8 @@ public class playermovement : MonoBehaviour
     private bool grounded;
     public InputActionReference moveinput;
     public InputActionReference jump;
-
+    public InputActionReference crouch;
+    public InputActionReference sprint;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +30,8 @@ public class playermovement : MonoBehaviour
         //make sure its enabled 
         moveinput.action.Enable();
         jump.action.Enable();
+        sprint.action.Enable();
+        crouch.action.Enable();
     }
     private void FixedUpdate()
     {
@@ -48,6 +55,10 @@ public class playermovement : MonoBehaviour
             Velocity.y = Mathf.Sqrt(jumphight * helpfulguy * gravity);
 
         }
+        if (crouch.action.triggered)
+        {
+            crouching();
+        }
         //add the force of gravity
         Velocity.y += gravity * Time.deltaTime;
         //add everthing up 
@@ -56,6 +67,10 @@ public class playermovement : MonoBehaviour
         cc.Move(alltogethernow);
         //wow thats alot of stuff for jumping and walking...
         
+    }
+    private void crouching()
+    {
+        cc.height = 0.5f; 
     }
     // Update is called once per frame
     void Update()
