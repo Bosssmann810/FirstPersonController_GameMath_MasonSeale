@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class playermovement : MonoBehaviour
 {
+    private Vector3 inputstorage;
     public float CamMax = 60f;
     public float CamMin = -60f;
     public float sensativity;
@@ -61,22 +63,52 @@ public class playermovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        
+        //if any of WASD or arrow keys are hit convertt the inputs to a vector 2
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
+        //make it a vector 3 to be useable
         Vector3 moveing = new Vector3(inputs.x, notneeded, inputs.y);
+        //for testing
         Debug.Log(inputs);
+        //if input 
         if (inputs != new Vector2(0f, 0f))
         {
+            //save whatever the input was in input storage
+            if (inputs.x == 1f)
+            {
+                inputstorage.x = 1f;
+            }
+            if (inputs.y == 1f)
+            {
+                inputstorage.z = 1f;
+            }
+            if (inputs.x == -1f)
+            {
+                inputstorage.x = -1f;
+            }
+            if (inputs.y == -1f)
+            {
+                inputstorage.z = -1f;
+            }
+            //apply acceleration
             speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime); 
         }
+        //if no input
         if (inputs == new Vector2(0f, 0f))
         {
+
             Debug.Log("a");
             //apply decleration
             speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
             //allow sprinting
             cansprint = true;
-
+            //continue to move using input storage
+            cc.Move(inputstorage * speed);
+            //if speed returns to normal stop moving and clear input storage.
+            if (speed == basespeed)
+            {
+                Debug.Log("stopped");
+                inputstorage = new Vector3(0f, 0f, 0f);
+            }
         }
 
         //if you hit left control
