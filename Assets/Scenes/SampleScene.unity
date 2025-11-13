@@ -297,13 +297,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288e562ea320fc94d818cc5e53bc90b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CamMax: 60
+  CamMin: -60
+  sensativity: 5
+  rotationY: 0
+  rotationX: 0
+  pov: {fileID: 330585545}
   cc: {fileID: 330585548}
-  speed: 0.1
+  speed: 1
   defaultheight: 0
-  defaultspeed: 0.1
+  defaultspeed: 1
+  maxspeed: 2
+  minspeed: 0
   small: 1
-  crouchspeed: 0.05
-  sprintspeed: 0.2
+  basespeed: 1
+  decelration: 1
+  crouchspeed: 0.5
+  sprintspeed: 2
+  acceleration: 2
   jumphight: 1.5
   movingin: {x: 0, y: 0, z: 0}
   gravity: -9.21
@@ -311,33 +322,24 @@ MonoBehaviour:
   jump: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   crouch: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   sprint: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
---- !u!54 &330585550
-Rigidbody:
+--- !u!114 &330585550
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdfca09affd46274ab17fc6c337daec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CamMax: 60
+  CamMin: -60
+  sensativity: 5
+  rotationY: 0
+  rotationX: 0
+  pov: {fileID: 330585545}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
