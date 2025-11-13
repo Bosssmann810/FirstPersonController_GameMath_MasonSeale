@@ -63,6 +63,7 @@ public class playermovement : MonoBehaviour
         //if they hit w
         if (Input.GetKey(KeyCode.W))
         {
+            
 
             //apply acceleration
             speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
@@ -112,19 +113,23 @@ public class playermovement : MonoBehaviour
             //make a debug log for testing
             Debug.Log("fish");
         }
-        //otherwise if nothing is pressed
-        else
+        if(Input.GetKey(KeyCode.W)!= true)
         {
-            //apply decleration
-            speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
-
+            
+            
+                Debug.Log("a");
+                //apply decleration
+                speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
+            cc.Move(Vector3.right * speed);
             //set height to normal
             cc.height = defaultheight;
-            //allow sprinting
-            cansprint = true;
+                //allow sprinting
+                cansprint = true;
 
-            //yes this code effects the stuff below   
+                //yes this code effects the stuff below   
+            
         }
+
         //if you hit shift
         if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
         {
@@ -133,6 +138,7 @@ public class playermovement : MonoBehaviour
             //debug log for testing
             Debug.Log("runnin");
         }
+        Debug.Log(speed);
     }
     // Update is called once per frame
     void Update()

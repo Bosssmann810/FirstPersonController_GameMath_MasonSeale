@@ -304,17 +304,17 @@ MonoBehaviour:
   rotationX: 0
   pov: {fileID: 330585545}
   cc: {fileID: 330585548}
-  speed: 1
+  speed: 0.1
   defaultheight: 0
-  defaultspeed: 1
+  defaultspeed: 0.1
   maxspeed: 2
   minspeed: 0
   small: 1
-  basespeed: 1
+  basespeed: 0.1
   decelration: 1
   crouchspeed: 0.5
   sprintspeed: 2
-  acceleration: 2
+  acceleration: 1
   jumphight: 1.5
   movingin: {x: 0, y: 0, z: 0}
   gravity: -9.21
