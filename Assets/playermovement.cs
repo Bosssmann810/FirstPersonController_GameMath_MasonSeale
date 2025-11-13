@@ -12,6 +12,7 @@ public class playermovement : MonoBehaviour
     public float rotationY = 0f;
     public float rotationX = 0f;
     public Camera pov;
+    private float notneeded = 0f;
     public CharacterController cc;
     public float speed;
     public float defaultheight;
@@ -60,44 +61,21 @@ public class playermovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //if they hit w
-        if (Input.GetKey(KeyCode.W))
+        
+        Vector2 inputs = moveinput.action.ReadValue<Vector2>();
+        Vector3 moveing = new Vector3(inputs.x, notneeded, inputs.y);
+        Debug.Log(inputs);
+        if (inputs != new Vector2(0f, 0f))
         {
-            
-
-            //apply acceleration
-            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
-            //move forward based on speed
-            cc.Move(Vector3.forward * speed);
-
+            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime); 
         }
-        if (Input.GetKey(KeyCode.S))
+        if (inputs == new Vector2(0f, 0f))
         {
-            //same stuff
-            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
-            //but it moves backwards.
-            cc.Move(-Vector3.forward * speed);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            //same stuff
-            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
-            //but it moves left.
-            cc.Move(Vector3.left * speed);
-
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            //same stuff
-            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
-            //but it moves right.
-            cc.Move(Vector3.right * speed);
-
-        }
-        if (Input.GetKey(KeyCode.None))
-        {
-            speed -= acceleration * Time.deltaTime;
-            speed = Mathf.Clamp(speed, minspeed, maxspeed);
+            Debug.Log("a");
+            //apply decleration
+            speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
+            //allow sprinting
+            cansprint = true;
 
         }
 
@@ -113,22 +91,7 @@ public class playermovement : MonoBehaviour
             //make a debug log for testing
             Debug.Log("fish");
         }
-        if(Input.GetKey(KeyCode.W)!= true)
-        {
-            
-            
-                Debug.Log("a");
-                //apply decleration
-                speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
-            cc.Move(Vector3.right * speed);
-            //set height to normal
-            cc.height = defaultheight;
-                //allow sprinting
-                cansprint = true;
 
-                //yes this code effects the stuff below   
-            
-        }
 
         //if you hit shift
         if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
@@ -138,6 +101,7 @@ public class playermovement : MonoBehaviour
             //debug log for testing
             Debug.Log("runnin");
         }
+        cc.Move(moveing * speed);
         Debug.Log(speed);
     }
     // Update is called once per frame
