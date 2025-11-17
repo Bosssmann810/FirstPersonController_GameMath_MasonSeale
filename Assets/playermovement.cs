@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,6 +22,12 @@ public class playermovement : MonoBehaviour
     public float defaultheight;
     public float defaultspeed;
     public float maxspeed;
+    public float sprintaccel;
+    public float sprintmax;
+    public float sprintdecel;
+    private float regaccel;
+    private float regmax;
+    private float regdecel;
     public float minspeed;
     public float small;
     public float basespeed;
@@ -42,6 +49,9 @@ public class playermovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        regaccel = acceleration;
+        regdecel = decelration;
+        regmax = maxspeed;
         //lock the mouce cursor in place
         Cursor.lockState = CursorLockMode.Locked;
         //hide the cursor
@@ -129,20 +139,30 @@ public class playermovement : MonoBehaviour
             //make a debug log for testing
             Debug.Log("fish");
         }
+        if(speed > maxspeed)
+        {
+            speed = maxspeed;
+        }
 
 
         //if you hit shift
-        if (cansprint == true && sprint.action.triggered == true)
+        if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
         {
-            //increase speed
-            acceleration = acceleration * 2;
-            maxspeed = maxspeed * 2;
+            //increase maxspeed and acceleration
+            acceleration = sprintaccel;
+            maxspeed = sprintmax;
+            //half decelleration
+            decelration = sprintdecel; ;
             //debug log for testing
             Debug.Log("runnin");
         }
-        if (sprint.action.triggered != true)
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+            acceleration = regaccel;
+            maxspeed = regmax;
+            decelration = regdecel;
 
+            //set everything to normal
         }
         //find the rotation of the mouses x variable (times sensativity)
         rotationY += Input.GetAxis("Mouse X") * sensativity;
