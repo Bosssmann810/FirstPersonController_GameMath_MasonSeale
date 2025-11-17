@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
+using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +14,7 @@ public class playermovement : MonoBehaviour
     public float sensativity;
     public float rotationY = 0f;
     public float rotationX = 0f;
-    public Camera pov;
+    public GameObject pov;
     private float notneeded = 0f;
     public CharacterController cc;
     public float speed;
@@ -46,7 +47,7 @@ public class playermovement : MonoBehaviour
         //hide the cursor
         Cursor.visible = false;
         //make sure the rigidbody is avilible to manipulate.
-        pov = gameObject.GetComponent<Camera>();
+        
 
         grounded = true;
         //get the height at the start and save it for later.
@@ -61,12 +62,16 @@ public class playermovement : MonoBehaviour
         crouch.action.Enable();
         
     }
-    private void FixedUpdate()
+
+    // Update is called once per frame
+    void Update()
     {
-        //if any of WASD or arrow keys are hit convertt the inputs to a vector 2
+        //if any of WASD or arrow keys are hit convert the inputs to a vector 2
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
         //make it a vector 3 to be useable
-        Vector3 moveing = new Vector3(inputs.x, notneeded, inputs.y);
+        Vector3 moveing = transform.forward * inputs.y+ transform.right * inputs.x;
+
+        
         //for testing
         Debug.Log(inputs);
         //if input 
@@ -90,7 +95,7 @@ public class playermovement : MonoBehaviour
                 inputstorage.z = -1f;
             }
             //apply acceleration
-            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime); 
+            speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
         }
         //if no input
         if (inputs == new Vector2(0f, 0f))
@@ -101,8 +106,9 @@ public class playermovement : MonoBehaviour
             speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
             //allow sprinting
             cansprint = true;
+            Vector3 Processing = (transform.forward * inputstorage.z) + transform.right * inputstorage.x;
             //continue to move using input storage
-            cc.Move(inputstorage * speed);
+            cc.Move(Processing * speed);
             //if speed returns to normal stop moving and clear input storage.
             if (speed == basespeed)
             {
@@ -126,19 +132,18 @@ public class playermovement : MonoBehaviour
 
 
         //if you hit shift
-        if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
+        if (cansprint == true && sprint.action.triggered == true)
         {
             //increase speed
-            speed = sprintspeed;
+            acceleration = acceleration * 2;
+            maxspeed = maxspeed * 2;
             //debug log for testing
             Debug.Log("runnin");
         }
-        cc.Move(moveing * speed);
-        Debug.Log(speed);
-    }
-    // Update is called once per frame
-    void Update()
-    {
+        if (sprint.action.triggered != true)
+        {
+
+        }
         //find the rotation of the mouses x variable (times sensativity)
         rotationY += Input.GetAxis("Mouse X") * sensativity;
         //same thing but for Y
@@ -146,14 +151,22 @@ public class playermovement : MonoBehaviour
         //clamp x so you cant look to far
         rotationX = Mathf.Clamp(rotationX, CamMin, CamMax);
         //convert the rotations to a usable angle vector 3 and move the camera
-        gameObject.transform.localEulerAngles = new Vector3(-rotationX, rotationY, 0f);
+        Vector3 holder = new Vector3(0f, rotationY, 0f);
+        //move the camera seperatly 
+        pov.transform.localEulerAngles = new Vector3(-rotationX, 0f, 0f);
+        cc.transform.localEulerAngles = holder;
 
         //to make sure i can still use the mouse
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            //show the cursor again
             Cursor.visible = true;
+            //let the cursor move
             Cursor.lockState = CursorLockMode.None;
         }
+        cc.Move(moveing* speed);
+        Debug.Log(speed);
+        Debug.Log(transform.forward);
 
     }
 }
