@@ -59,7 +59,6 @@ public class playermovement : MonoBehaviour
         //make sure the rigidbody is avilible to manipulate.
         
 
-        grounded = true;
         //get the height at the start and save it for later.
         defaultheight = cc.height;
     }
@@ -185,8 +184,32 @@ public class playermovement : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
         cc.Move(moveing* speed);
-        Debug.Log(speed);
-        Debug.Log(transform.forward);
+       // Debug.Log(speed);
+        // Debug.Log(transform.forward);
+        if (grounded)
+        {
+            Debug.Log("g");
+        }
+        else
+        {
+            Debug.Log("not");
+        }
+        
+            
 
+    }
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("floor"))
+        {
+            grounded = true;
+        }
+    }
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("floor"))
+        {
+            grounded = false;
+        }
     }
 }
