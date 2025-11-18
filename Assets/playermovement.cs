@@ -141,7 +141,7 @@ public class playermovement : MonoBehaviour
         }
         if(speed > maxspeed)
         {
-            speed = maxspeed;
+            speed = Mathf.MoveTowards(speed, maxspeed, decelration * Time.deltaTime);
         }
 
 
