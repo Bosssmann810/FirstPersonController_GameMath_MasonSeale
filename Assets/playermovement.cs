@@ -149,7 +149,7 @@ public class playermovement : MonoBehaviour
         {
             
             //slow the player down
-            speed = crouchspeed;
+            maxspeed = crouchspeed;
             //make the player smaller
             cc.height = small;
             //disable sprinting
@@ -161,7 +161,7 @@ public class playermovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             //set speed to normal
-            speed = defaultspeed;
+            max = regmax;
             //set height to normal 
             cc.height = defaultheight;
             //allow sprinting
@@ -174,7 +174,7 @@ public class playermovement : MonoBehaviour
         if(speed > maxspeed)
         {
             //apply deceleration (mostly happens when going from sprinting to walking)
-            speed = Mathf.MoveTowards(speed, maxspeed, decelration * Time.deltaTime);
+            speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
         }
 
 
@@ -234,7 +234,6 @@ public class playermovement : MonoBehaviour
         {
             Debug.Log("not");
         }
-        
             
 
     }
