@@ -19,6 +19,7 @@ public class playermovement : MonoBehaviour
     private float notneeded = 0f;
     public CharacterController cc;
     public float speed;
+    public float speedituplad;
     public float defaultheight;
     public float defaultspeed;
     public float maxspeed;
@@ -38,7 +39,7 @@ public class playermovement : MonoBehaviour
     private bool cansprint = true;
     public float jumphight;
     public Vector3 movingin; 
-    public float gravity = -9.81f;
+    public float gravity = -10.81f;
     private float helpfulguy = -1f;
     private float max = 1f;
     private bool grounded;
@@ -75,11 +76,18 @@ public class playermovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //checks weather or not its grounded or not
+        grounded = cc.isGrounded;
+
         //if any of WASD or arrow keys are hit convert the inputs to a vector 2
         Vector2 inputs = moveinput.action.ReadValue<Vector2>();
         //make it a vector 3 to be useable
         Vector3 moveing = transform.forward * inputs.y+ transform.right * inputs.x;
 
+        if(grounded && moveing.y <= 0)
+        {
+            moveing.y = 0;
+        }
         
         //for testing
         Debug.Log(inputs);
@@ -125,19 +133,30 @@ public class playermovement : MonoBehaviour
                 inputstorage = new Vector3(0f, 0f, 0f);
             }
         }
+        if(jump.action.triggered && grounded == true)
+        {
+            moveing.y = jumphight * helpfulguy * gravity;
+        }
 
         //if you hit left control
         if (Input.GetKey(KeyCode.LeftControl))
         {
             //make the player smaller
-            cc.height = small; //for some reason they start sinking into the ground...
+            cc.height = small;
             //disable sprinting
             cansprint = false;
             //slow the player down
-            speed = crouchspeed;
+            maxspeed = crouchspeed;
             //make a debug log for testing
             Debug.Log("fish");
         }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            cc.height = defaultheight;
+            cansprint = true;
+            maxspeed = regmax;
+        }
+
         if(speed > maxspeed)
         {
             speed = Mathf.MoveTowards(speed, maxspeed, decelration * Time.deltaTime);
@@ -183,6 +202,7 @@ public class playermovement : MonoBehaviour
             //let the cursor move
             Cursor.lockState = CursorLockMode.None;
         }
+        moveing.y += gravity * Time.deltaTime * speedituplad;
         cc.Move(moveing* speed);
        // Debug.Log(speed);
         // Debug.Log(transform.forward);
@@ -197,19 +217,5 @@ public class playermovement : MonoBehaviour
         
             
 
-    }
-    private void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag("floor"))
-        {
-            grounded = true;
-        }
-    }
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag("floor"))
-        {
-            grounded = false;
-        }
     }
 }
