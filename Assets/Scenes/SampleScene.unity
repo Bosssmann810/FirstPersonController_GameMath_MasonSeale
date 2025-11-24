@@ -318,7 +318,7 @@ MonoBehaviour:
   pov: {fileID: 1317868865}
   cc: {fileID: 330585548}
   speed: 0.1
-  speedituplad: 10
+  speedituplad: 2
   defaultheight: 0
   defaultspeed: 0.1
   maxspeed: 0.2
@@ -332,7 +332,7 @@ MonoBehaviour:
   crouchspeed: 0.02
   sprintspeed: 0.5
   acceleration: 0.02
-  jumphight: 2
+  jumphight: 0.5
   movingin: {x: 0, y: 0, z: 0}
   gravity: -9.21
   moveinput: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}

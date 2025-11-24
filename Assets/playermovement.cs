@@ -41,7 +41,7 @@ public class playermovement : MonoBehaviour
     public Vector3 movingin;
     private Vector3 cleared = new Vector3(0, 0, 0);
     private Vector2 nothingpressed = new Vector2(0, 0);
-    public float gravity = -10.81f;
+    public float gravity = -9.81f;
     private float helpfulguy = -1f;
     private float max = 1f;
     private bool grounded;
@@ -168,6 +168,7 @@ public class playermovement : MonoBehaviour
             cansprint = true;
             //reset max speed
             maxspeed = regmax;
+            
         }
         //if speed is ever higher then maxspeed
         if(speed > maxspeed)
@@ -205,7 +206,7 @@ public class playermovement : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, CamMin, CamMax);
         //convert the rotations to a usable angle vector 3 and move the camera
         Vector3 holder = new Vector3(0f, rotationY, 0f);
-        //move the camera seperatly 
+        //move the camera seperatly (x just moves the camera while y moves the facing direction)
         pov.transform.localEulerAngles = new Vector3(-rotationX, 0f, 0f);
         cc.transform.localEulerAngles = holder;
 
@@ -217,8 +218,12 @@ public class playermovement : MonoBehaviour
             //let the cursor move
             Cursor.lockState = CursorLockMode.None;
         }
+        //add gravity to the moving.y to make it fall
         moveing.y += gravity * Time.deltaTime * speedituplad;
-        cc.Move(moveing* speed);
+        //add the x y and zz parts of moveing together.
+        Vector3 splicing = new Vector3(moveing.x * speed, moveing.y, moveing.z * speed);
+        //move that fella
+        cc.Move(splicing);
        // Debug.Log(speed);
         // Debug.Log(transform.forward);
         if (grounded)
