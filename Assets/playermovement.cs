@@ -38,7 +38,9 @@ public class playermovement : MonoBehaviour
     public float acceleration;
     private bool cansprint = true;
     public float jumphight;
-    public Vector3 movingin; 
+    public Vector3 movingin;
+    private Vector3 cleared = new Vector3(0, 0, 0);
+    private Vector2 nothingpressed = new Vector2(0, 0);
     public float gravity = -10.81f;
     private float helpfulguy = -1f;
     private float max = 1f;
@@ -50,6 +52,8 @@ public class playermovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //get all the veriables for later reseting
+        defaultspeed = speed;
         regaccel = acceleration;
         regdecel = decelration;
         regmax = maxspeed;
@@ -92,7 +96,7 @@ public class playermovement : MonoBehaviour
         //for testing
         Debug.Log(inputs);
         //if input 
-        if (inputs != new Vector2(0f, 0f))
+        if (inputs != nothingpressed)
         {
             //save whatever the input was in input storage
             if (inputs.x == 1f)
@@ -115,14 +119,13 @@ public class playermovement : MonoBehaviour
             speed = Mathf.MoveTowards(speed, maxspeed, acceleration * Time.deltaTime);
         }
         //if no input
-        if (inputs == new Vector2(0f, 0f))
+        if (inputs == nothingpressed)
         {
 
             Debug.Log("a");
             //apply decleration
             speed = Mathf.MoveTowards(speed, basespeed, decelration * Time.deltaTime);
-            //allow sprinting
-            cansprint = true;
+            //process the original variables into a usable vector3
             Vector3 Processing = (transform.forward * inputstorage.z) + transform.right * inputstorage.x;
             //continue to move using input storage
             cc.Move(Processing * speed);
@@ -130,7 +133,7 @@ public class playermovement : MonoBehaviour
             if (speed == basespeed)
             {
                 Debug.Log("stopped");
-                inputstorage = new Vector3(0f, 0f, 0f);
+                inputstorage = cleared;
             }
         }
         //if you hit jump and are on the ground
@@ -140,21 +143,25 @@ public class playermovement : MonoBehaviour
             moveing.y = jumphight * helpfulguy * gravity;
         }
 
+
         //if you hit left control
         if (Input.GetKey(KeyCode.LeftControl))
         {
+            
+            //slow the player down
+            speed = crouchspeed;
             //make the player smaller
             cc.height = small;
             //disable sprinting
             cansprint = false;
-            //slow the player down
-            maxspeed = crouchspeed;
             //make a debug log for testing
             Debug.Log("fish");
         }
         //if control is released
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
+            //set speed to normal
+            speed = defaultspeed;
             //set height to normal 
             cc.height = defaultheight;
             //allow sprinting
