@@ -133,8 +133,10 @@ public class playermovement : MonoBehaviour
                 inputstorage = new Vector3(0f, 0f, 0f);
             }
         }
+        //if you hit jump and are on the ground
         if(jump.action.triggered && grounded == true)
         {
+            //jump (jumpheight times 2 negative numbers to prevent errors)
             moveing.y = jumphight * helpfulguy * gravity;
         }
 
@@ -150,15 +152,20 @@ public class playermovement : MonoBehaviour
             //make a debug log for testing
             Debug.Log("fish");
         }
+        //if control is released
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
+            //set height to normal 
             cc.height = defaultheight;
+            //allow sprinting
             cansprint = true;
+            //reset max speed
             maxspeed = regmax;
         }
-
+        //if speed is ever higher then maxspeed
         if(speed > maxspeed)
         {
+            //apply deceleration (mostly happens when going from sprinting to walking)
             speed = Mathf.MoveTowards(speed, maxspeed, decelration * Time.deltaTime);
         }
 
@@ -174,6 +181,7 @@ public class playermovement : MonoBehaviour
             //debug log for testing
             Debug.Log("runnin");
         }
+        //when you let go of shift
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             acceleration = regaccel;

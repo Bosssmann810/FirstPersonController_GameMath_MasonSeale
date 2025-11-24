@@ -216,13 +216,13 @@ MonoBehaviour:
   maxspeed: 0.2
   sprintaccel: 0.2
   sprintmax: 0.5
-  sprintdecel: 0.5
+  sprintdecel: 0.1
   minspeed: 0
   small: 0.5
   basespeed: 0.1
-  decelration: 0.5
+  decelration: 0.3
   crouchspeed: 0.05
-  sprintspeed: 0.6
+  sprintspeed: 0.5
   acceleration: 0.01
   jumphight: 2
   movingin: {x: 0, y: 0, z: 0}
