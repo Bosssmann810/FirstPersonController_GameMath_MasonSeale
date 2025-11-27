@@ -61,7 +61,6 @@ public class playermovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         //hide the cursor
         Cursor.visible = false;
-        //make sure the rigidbody is avilible to manipulate.
         
 
         //get the height at the start and save it for later.
@@ -178,7 +177,7 @@ public class playermovement : MonoBehaviour
         }
 
 
-        //if you hit shift
+        //if you hit shift and can sprint
         if (cansprint == true && Input.GetKey(KeyCode.LeftShift))
         {
             //increase maxspeed and acceleration
@@ -192,11 +191,12 @@ public class playermovement : MonoBehaviour
         //when you let go of shift
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+            //set everything to normal
             acceleration = regaccel;
             maxspeed = regmax;
             decelration = regdecel;
 
-            //set everything to normal
+            
         }
         //find the rotation of the mouses x variable (times sensativity)
         rotationY += Input.GetAxis("Mouse X") * sensativity;
@@ -224,8 +224,7 @@ public class playermovement : MonoBehaviour
         Vector3 splicing = new Vector3(moveing.x * speed, moveing.y, moveing.z * speed);
         //move that fella
         cc.Move(splicing);
-       // Debug.Log(speed);
-        // Debug.Log(transform.forward);
+        //purly for testing grounded
         if (grounded)
         {
             Debug.Log("g");
